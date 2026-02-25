@@ -1,7 +1,11 @@
+
+
 from fastapi import FastAPI
+from routers import items
 
-app = FastAPI()
+APP.include_routers(items.routers) # type: ignore
+APP= FastAPI()
 
-@app.get("/")
-async def root():
-    return "¡hola"" mundo!"
+@APP.get("/")
+def read_root():
+    return {"Hello": "World"}
