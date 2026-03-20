@@ -1,5 +1,7 @@
 
-from fastapi import FastAPI
+from http.client import HTTPException
+
+from fastapi import APIRouter, FastAPI
 from pydantic import BaseModel
 
 
@@ -9,15 +11,16 @@ class User(BaseModel):
     email: str
 
 
+router = APIRouter()
 app = FastAPI()
 
-@app.get("/")
+@router.get("/")
 async def users():
     return [User(id=1, name="Alejandro", email="alejandro@example.com"),
             User(id=2, name="jorge", email="jorge@example.com"),
             User(id=3, name="Ana", email="ana@example.com")]
 
-@app.get("/users/{user_id}")
+@router.get("/users/{user_id}")
 async def userclass(user_id: int):
     return User(id=user_id, name="User " + str(user_id), email=f"user{user_id}@example.com")
   
@@ -25,7 +28,7 @@ user_list = [User(id=1, name="Alejandro", email="alejandro@example.com"),
              User(id=2, name="jorge", email="jorge@example.com"),
              User(id=3, name="Ana", email="ana@example.com")]
 
-@app.get("/users/{user_id}/")
+@router.get("/users/{user_id}/")
 async def get_user(user_id: int):
     user = filter(lambda u: u.id == user_id, user_list)
     try:
@@ -33,7 +36,7 @@ async def get_user(user_id: int):
     except IndexError:
         return {"error": "User not found"}
 
-@app.get("/usersquery/")
+@router.get("/usersquery/")
 async def user_query(name: str):
     user = filter(lambda user: user.name == name, user_list)
     try:
@@ -41,7 +44,7 @@ async def user_query(name: str):
     except IndexError:
         return {"error": "User not found"}
 
-@app.post("/users/")
+@router.post("/users/", status_code=201)
 async def user(user: User):
     if type (search_user(user.id)) == User:
         return {"error": "User already exists"}
@@ -68,3 +71,34 @@ async def update_user(user: User):
     if not found:
         return {"error": "User not found"}
     return user
+@app.delete("/users/{user_id}")
+async def delete_user(user_id: int):
+    for index , saved in enumerate(user_list):
+        if saved.id == user_id:
+            del user_list[index]
+            return {"message": "User deleted"}
+    return {"error": "User not found"}
+
+
+@app.delete("/users/{user_id}")
+async def delete_user(user_id: int):
+    found=False
+    for index, saved in enumerate(user_list):
+        if saved.id == user_id:
+            del user_list[index]
+            found = True
+            break
+    if not found:
+        return {"error": "User not found"}
+    return {"message": "User deleted"}
+
+## http status code ##
+
+user_list = []
+@app.post("/users/", status_code=201)
+async def user(user: User):
+    if type (search_user(user.id)) == User:
+     raise HTTPException(status_code=400, detail="User already exists")
+
+user_list.append(user)
+return user

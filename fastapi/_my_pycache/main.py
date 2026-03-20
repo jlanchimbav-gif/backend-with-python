@@ -1,9 +1,13 @@
 
 from fastapi import FastAPI 
-from fastapi  import routers
+
+  ## routers ##
+from fastapi._my_pycache.routers import products
+from fastapi._my_pycache.routers.users import users 
 
 APP= FastAPI()
-APP.include_routers(routers)
+APP.include_routers(products.router)
+APP.include_routers(users.router)
 APP= FastAPI()
 
 @APP.get("/")
