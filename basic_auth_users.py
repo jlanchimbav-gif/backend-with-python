@@ -1,7 +1,7 @@
 from http.client import HTTPException
 
 from fastapi import FastAPI
-from fastapi._my_pycache.routers.users import search_user
+from fastapi._my_pycache.routers.users import search_user, search_user_db, user
 from pydantic import BaseModel
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi import Depends
@@ -49,6 +49,15 @@ def search_user_db(username: str):
         return UserDB(**user_db[username])
     return None
 
+async def current_user(token:str=Depends(oauth2_scheme)):
+    user = search_user(token)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"})
+    return user
+
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
      user_db = search_user_db(form_data.username)
@@ -61,4 +70,5 @@ if Form.password != user.password:
         raise HTTPException(
             status_code=400, detail="Incorrect username or password")
         
-return({"access_token": user.username, "token_type": "bearer"})
+    return{"access_token": user.username, "token_type": "bearer"}
+
