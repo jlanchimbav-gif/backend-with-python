@@ -2,10 +2,10 @@
 from http.client import HTTPException
 
 from fastapi import APIRouter, FastAPI
-from pydantic import BaseModel
+from fastapi import pydantic 
 
 
-class User(BaseModel):
+class User(pydantic.BaseModel):
     id: int
     name: str
     email: str
