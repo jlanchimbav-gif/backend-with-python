@@ -1,6 +1,6 @@
 
 from fastapi import APIRouter, HTTPException, status
-from pydantic import BaseModel
+from pydantic import BaseModel # type: ignore
 
 
 class User(BaseModel):
@@ -29,7 +29,7 @@ def search_user(user_id: int):
 
 
 # Endpoints
-@router.get("/")
+@router.get("/users")
 async def list_users():
     return user_list
 
