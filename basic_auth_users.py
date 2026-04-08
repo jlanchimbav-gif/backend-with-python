@@ -1,10 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
+from passlib.context import CryptContext
 
 router = APIRouter()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+# Password hashing security
+crypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
 # Models
 class User(BaseModel):
@@ -15,7 +18,7 @@ class User(BaseModel):
     age: int
     disabled: bool
 
-class UserDB(User):
+class UserDB(**User):
     password: str
 
 # Database
@@ -26,7 +29,7 @@ user_db = {
         "surname": "Lanchimba",
         "email": "jlanchimbav@unemi.edu.ec",
         "age": 26,
-        "password": "password123",
+        "password": crypt.hash("password123"),  # ✅ Hasheada con bcrypt
         "disabled": False
     },
     "Jaguarking": {
@@ -35,7 +38,7 @@ user_db = {
         "surname": "vivas",
         "email": "jvivas@unemi.edu.ec",
         "age": 30,
-        "password": "password456",
+        "password": crypt.hash("password456"),  # ✅ Hasheada con bcrypt
         "disabled": False
     }
 }
@@ -78,7 +81,8 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
             detail="Incorrect username or password"
         )
     
-    if form_data.password != user_record.password:
+    # ✅ Verificar contraseña hasheada
+    if not crypt.verify(form_data.password, user_record.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password"
