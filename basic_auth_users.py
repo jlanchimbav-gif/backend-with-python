@@ -1,13 +1,10 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
-from passlib.context import CryptContext
 
-# Security
-crypt = CryptContext(schemes=["bcrypt"])
+router = APIRouter()
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-app = FastAPI()
 
 # Models
 class User(BaseModel):
@@ -29,7 +26,7 @@ user_db = {
         "surname": "Lanchimba",
         "email": "jlanchimbav@unemi.edu.ec",
         "age": 26,
-        "password": crypt.hash("password123"),
+        "password": "password123",
         "disabled": False
     },
     "Jaguarking": {
@@ -38,7 +35,7 @@ user_db = {
         "surname": "vivas",
         "email": "jvivas@unemi.edu.ec",
         "age": 30,
-        "password": crypt.hash("password456"),
+        "password": "password456",
         "disabled": False
     }
 }
@@ -55,31 +52,57 @@ def search_user(username: str):
     return None
 
 # Authentication
-async def current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user(token: str = Depends(oauth2_scheme)):
     user = search_user_db(token)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"})
+            detail="Invalid credentials",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+    if user.disabled:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Inactive user"
+        )
     return user
 
 # Endpoints
-@app.post("/token")
+@router.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    """Login endpoint - returns token"""
     user_record = search_user_db(form_data.username)
     if not user_record:
         raise HTTPException(
-            status_code=400,
-            detail="Incorrect username or password")
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password"
+        )
     
-    if not crypt.verify(form_data.password, user_record.password):
+    if form_data.password != user_record.password:
         raise HTTPException(
-            status_code=400,
-            detail="Incorrect username or password")
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password"
+        )
     
     return {
         "access_token": user_record.username,
         "token_type": "bearer"
     }
+
+@router.get("/me", response_model=User)
+async def get_current_user_info(current_user: User = Depends(get_current_user)):
+    """Get current authenticated user information"""
+    return current_user
+
+@router.get("/users/{username}", response_model=User)
+async def get_user_info(username: str, current_user: User = Depends(get_current_user)):
+    """Get user information (requires authentication)"""
+    user = search_user(username)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    return user
+
 
