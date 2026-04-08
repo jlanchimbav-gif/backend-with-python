@@ -12,7 +12,7 @@ SECRET_KEY = "your-secret-key-change-in-production"
 ACCESS_TOKEN_DURATION = 30  # minutes
 
 # Security - Password hashing
-crypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
+crypt = CryptContext(schemes=["argon2"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/jwt-auth/token")
 
 # Create router for JWT authentication

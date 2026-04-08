@@ -1,0 +1,84 @@
+[
+  {
+    "action": "Login",
+    "timestamp": "2026-04-08T14:16:55.850070",
+    "method": "POST",
+    "endpoint": "/jwt-auth/token (user: JaguarEW)",
+    "status_code": 200,
+    "response": {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJKYWd1YXJFVyIsImV4cCI6MTc3NTY3NzYxNX0.S0pjgyHQiP8oY15HPA5ytbQ9BGHxecA0-qor2n1KTm8",
+      "token_type": "bearer",
+      "expires_in": 1800
+    },
+    "error": null
+  },
+  {
+    "action": "Login",
+    "timestamp": "2026-04-08T14:16:57.972631",
+    "method": "POST",
+    "endpoint": "/jwt-auth/token (user: Jaguarking)",
+    "status_code": 200,
+    "response": {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJKYWd1YXJraW5nIiwiZXhwIjoxNzc1Njc3NjE3fQ.siIpA3xxRS6kJa1L9YmGKh7ggRZcq-Gh8amxsrXsRwc",
+      "token_type": "bearer",
+      "expires_in": 1800
+    },
+    "error": null
+  },
+  {
+    "action": "Get Current User",
+    "timestamp": "2026-04-08T14:17:00.017445",
+    "method": "GET",
+    "endpoint": "/jwt-auth/me",
+    "status_code": 200,
+    "response": {
+      "username": "JaguarEW",
+      "name": "Alejandro",
+      "surname": "Lanchimba",
+      "email": "jlanchimbav@unemi.edu.ec",
+      "age": 26,
+      "disabled": false
+    },
+    "error": null
+  },
+  {
+    "action": "Get User Info",
+    "timestamp": "2026-04-08T14:17:02.063720",
+    "method": "GET",
+    "endpoint": "/jwt-auth/users/Jaguarking",
+    "status_code": 200,
+    "response": {
+      "username": "Jaguarking",
+      "name": "Jorge",
+      "surname": "vivas",
+      "email": "jvivas@unemi.edu.ec",
+      "age": 30,
+      "disabled": false
+    },
+    "error": null
+  },
+  {
+    "action": "Validate Token",
+    "timestamp": "2026-04-08T14:17:04.160400",
+    "method": "POST",
+    "endpoint": "/jwt-auth/token/validate",
+    "status_code": 200,
+    "response": {
+      "valid": true,
+      "username": "JaguarEW",
+      "message": "Token is valid"
+    },
+    "error": null
+  },
+  {
+    "action": "Invalid Token Test",
+    "timestamp": "2026-04-08T14:17:06.186411",
+    "method": "GET",
+    "endpoint": "/jwt-auth/me (with invalid token)",
+    "status_code": 401,
+    "response": {
+      "error": "Unauthorized"
+    },
+    "error": null
+  }
+]

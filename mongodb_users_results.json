@@ -1,0 +1,185 @@
+[
+  {
+    "action": "Get All Users",
+    "timestamp": "2026-04-08T16:58:39.800893",
+    "method": "GET",
+    "endpoint": "/users",
+    "status_code": 200,
+    "response": [
+      {
+        "_id": "1",
+        "name": "Alejandro",
+        "email": "alejandro@example.com"
+      },
+      {
+        "_id": "2",
+        "name": "Jorge",
+        "email": "jorge@example.com"
+      },
+      {
+        "_id": "3",
+        "name": "Ana",
+        "email": "ana@example.com"
+      }
+    ],
+    "error": null
+  },
+  {
+    "action": "Create User",
+    "timestamp": "2026-04-08T16:58:41.852064",
+    "method": "POST",
+    "endpoint": "/users/ (user: Alejandro Lanchimba)",
+    "status_code": 201,
+    "response": {
+      "_id": "4",
+      "id": "4",
+      "name": "Alejandro Lanchimba",
+      "email": "alejandro.lanchimba@example.com"
+    },
+    "error": null
+  },
+  {
+    "action": "Create User",
+    "timestamp": "2026-04-08T16:58:43.907220",
+    "method": "POST",
+    "endpoint": "/users/ (user: Jorge Vivas)",
+    "status_code": 201,
+    "response": {
+      "_id": "5",
+      "id": "5",
+      "name": "Jorge Vivas",
+      "email": "jorge.vivas@example.com"
+    },
+    "error": null
+  },
+  {
+    "action": "Create User",
+    "timestamp": "2026-04-08T16:58:45.969785",
+    "method": "POST",
+    "endpoint": "/users/ (user: Ana García)",
+    "status_code": 201,
+    "response": {
+      "_id": "6",
+      "id": "6",
+      "name": "Ana García",
+      "email": "ana.garcia@example.com"
+    },
+    "error": null
+  },
+  {
+    "action": "Create User",
+    "timestamp": "2026-04-08T16:58:48.013105",
+    "method": "POST",
+    "endpoint": "/users/ (user: Carlos López)",
+    "status_code": 201,
+    "response": {
+      "_id": "7",
+      "id": "7",
+      "name": "Carlos López",
+      "email": "carlos.lopez@example.com"
+    },
+    "error": null
+  },
+  {
+    "action": "Duplicate User Test",
+    "timestamp": "2026-04-08T16:58:50.057014",
+    "method": "POST",
+    "endpoint": "/users/ (duplicate)",
+    "status_code": 400,
+    "response": {
+      "detail": "User with this email already exists"
+    },
+    "error": null
+  },
+  {
+    "action": "Get User by ID",
+    "timestamp": "2026-04-08T16:58:52.098632",
+    "method": "GET",
+    "endpoint": "/users/4",
+    "status_code": 200,
+    "response": {
+      "_id": "4",
+      "id": "4",
+      "name": "Alejandro Lanchimba",
+      "email": "alejandro.lanchimba@example.com"
+    },
+    "error": null
+  },
+  {
+    "action": "Search User by Name",
+    "timestamp": "2026-04-08T16:58:54.130229",
+    "method": "GET",
+    "endpoint": "/usersquery/?name=Alejandro Lanchimba",
+    "status_code": 200,
+    "response": {
+      "_id": "4",
+      "id": "4",
+      "name": "Alejandro Lanchimba",
+      "email": "alejandro.lanchimba@example.com"
+    },
+    "error": null
+  },
+  {
+    "action": "Update User",
+    "timestamp": "2026-04-08T16:58:56.191489",
+    "method": "PUT",
+    "endpoint": "/users/4",
+    "status_code": 200,
+    "response": {
+      "_id": "4",
+      "id": "4",
+      "name": "Alejandro Lanchimba (updated)",
+      "email": "alejandro.updated@example.com"
+    },
+    "error": null
+  },
+  {
+    "action": "Get All Users (Final)",
+    "timestamp": "2026-04-08T16:58:58.228889",
+    "method": "GET",
+    "endpoint": "/users",
+    "status_code": 200,
+    "response": [
+      {
+        "_id": "1",
+        "name": "Alejandro",
+        "email": "alejandro@example.com"
+      },
+      {
+        "_id": "2",
+        "name": "Jorge",
+        "email": "jorge@example.com"
+      },
+      {
+        "_id": "3",
+        "name": "Ana",
+        "email": "ana@example.com"
+      },
+      {
+        "_id": "4",
+        "id": "4",
+        "name": "Alejandro Lanchimba (updated)",
+        "email": "alejandro.updated@example.com"
+      },
+      {
+        "_id": "5",
+        "id": "5",
+        "name": "Jorge Vivas",
+        "email": "jorge.vivas@example.com"
+      },
+      {
+        "_id": "6",
+        "id": "6",
+        "name": "Ana García",
+        "email": "ana.garcia@example.com"
+      },
+      {
+        "_id": "7",
+        "id": "7",
+        "name": "Carlos López",
+        "email": "carlos.lopez@example.com"
+      }
+    ],
+    "error": null
+  }
+]

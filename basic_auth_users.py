@@ -6,7 +6,7 @@ from passlib.context import CryptContext
 router = APIRouter()
 
 # Password hashing security
-crypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
+crypt = CryptContext(schemes=["argon2"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
 # Models
@@ -18,7 +18,7 @@ class User(BaseModel):
     age: int
     disabled: bool
 
-class UserDB(**User):
+class UserDB(User):
     password: str
 
 # Database
